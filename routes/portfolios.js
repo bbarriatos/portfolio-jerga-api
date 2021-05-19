@@ -4,12 +4,15 @@ const {
   getPortfolios,
   getPortfolioById,
   createPortfolio,
+  updatePortfolio,
+  deletePortfolio,
 } = require('../controllers/portfolios');
-const { checkJwt } = require('../controllers/auth');
+const { checkJwt, checkRole } = require('../controllers/auth');
 
 router.get('', getPortfolios);
 router.get('/:id', getPortfolioById);
-
-router.post('', checkJwt, createPortfolio);
+router.patch('/:id', checkJwt, checkRole('admin'), updatePortfolio);
+router.delete('/:id', checkJwt, checkRole('admin'), deletePortfolio);
+router.post('', checkJwt, checkRole('admin'), createPortfolio);
 
 module.exports = router;
